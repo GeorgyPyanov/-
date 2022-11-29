@@ -1,18 +1,19 @@
 import sqlite3
 import sys
-from PyQt5 import uic
 from PyQt5.QtWidgets import QApplication, QMainWindow, QTableWidgetItem, QInputDialog, QPushButton
+from main_0 import Ui_MainWindow
+from addEditCoffeeForm import Ui_MainWindow0
 
 
-class SecondForm(QMainWindow):
+class SecondForm(QMainWindow, Ui_MainWindow0):
     def __init__(self):
         super().__init__()
+        self.setupUi(self)
         self.id = 0
         self.k = 0
         self.con = sqlite3.connect("coffee.db")
         self.cur = self.con.cursor()
         self.cursor = self.con.execute('select * from coffees')
-        uic.loadUi('addEditCoffeeForm.ui', self)
         self.action.triggered.connect(self.run)
         self.action_2.triggered.connect(self.run_1)
         self.pushButton.clicked.connect(self.a)
@@ -133,14 +134,21 @@ class SecondForm(QMainWindow):
         self.con.commit()
 
 
-class MyWidget(QMainWindow):
+class MyWidget(QMainWindow, Ui_MainWindow):
     def __init__(self):
         super().__init__()
-        uic.loadUi('main.ui', self)
+        self.setupUi(self)
+        self.coffee()
+
+    def hello(self):
         self.coffee()
 
     def coffee(self):
-        self.tableWidget.setColumnCount(5)
+        self.btn = QPushButton('Обновить', self)
+        self.btn.resize(100, 100)
+        self.btn.move(700, 100)
+        self.btn.clicked.connect(self.hello)
+        self.tableWidget.setColumnCount(7)
         self.g = 0
         self.con = sqlite3.connect("coffee.db")
         self.cur = self.con.cursor()
